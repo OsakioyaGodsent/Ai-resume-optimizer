@@ -1,3 +1,4 @@
+from fastapi.responses import FileResponse
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -25,6 +26,10 @@ app.add_middleware(
 app.include_router(lead_router)
 app.include_router(ai_optimizer_router)
 
-@app.get("/")
-def read_root():
+@app.get("/health")
+def health_check():
     return {"status": "online", "suite": "fully active"}
+
+@app.get("/")
+def serve_frontend():
+    return FileResponse("index.html", media_type="text/html")
